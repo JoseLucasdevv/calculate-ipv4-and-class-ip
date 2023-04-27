@@ -9,19 +9,29 @@ function calculateIpv4() {
 function classIpv4(arrayBinary) {
   const stringBinary = arrayBinary.join("");
   if (stringBinary.startsWith("0")) {
-    console.log("ip de Classe A pois o primeiro Bit é 0");
+    console.log(
+      `ip de Classe A pois o primeiro Bit é 0, o binário completo ${stringBinary}`
+    );
   }
   if (stringBinary.startsWith("10")) {
-    console.log("ip de Classe B pois os primeiros Bits são 10");
+    console.log(
+      `ip de Classe B pois os primeiros Bits são 10,o binário completo ${stringBinary}`
+    );
   }
   if (stringBinary.startsWith("110")) {
-    console.log("ip de Classe C pois os primeiros Bits são 110");
+    console.log(
+      `ip de Classe C pois os primeiros Bits são 110,o binário completo ${stringBinary}`
+    );
   }
   if (stringBinary.startsWith("1110")) {
-    console.log("ip de Classe D pois os primeiros Bits são 1110");
+    console.log(
+      `ip de Classe D pois os primeiros Bits são 1110,o binário completo ${stringBinary}`
+    );
   }
   if (stringBinary.startsWith("11110")) {
-    console.log("ip de Classe E pois os primeiros Bits são 11110");
+    console.log(
+      `ip de Classe E pois os primeiros Bits são 11110,o binário completo ${stringBinary}`
+    );
   }
 }
 
