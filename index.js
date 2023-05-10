@@ -1,6 +1,8 @@
+const ip = " 192.168.1.100";
+
 function calculateIpv4() {
-  const ip = "192.168.0.1";
   const arr = [128, 64, 32, 16, 8, 4, 2, 1];
+
   const result = calculateNumber(ip);
   const number = transferToNumber(result);
   const resultBinary = transferToBinary(number, arr);
@@ -9,18 +11,41 @@ function calculateIpv4() {
 function classIpv4(arrayBinary) {
   const stringBinary = arrayBinary.join("");
   if (stringBinary.startsWith("0")) {
+    const { classA: maskClassA } = maskNetwork();
+    const { classA: cidrClassA } = cidr();
+    const addressNetwork = calcAddressNetwork(maskClassA);
+    const addressBroadcast = calcAddressBroadcast(addressNetwork);
+
     console.log(
-      `ip de Classe A pois o primeiro Bit é 0, o binário completo ${stringBinary}`
+      `ip de Classe A pois o primeiro Bit é 0, o binário completo ${stringBinary} e sua mask é ${maskClassA.join(
+        ""
+      )} o CIDR é, ${cidrClassA} o endereço de rede é ${addressNetwork} o endereço de broadcast é ${addressBroadcast}`
     );
   }
   if (stringBinary.startsWith("10")) {
+    const { classB: maskClassB } = maskNetwork();
+    const { classB: cidrClassB } = cidr();
+    const addressNetwork = calcAddressNetwork(maskClassB);
+    const addressBroadcast = calcAddressBroadcast(addressNetwork);
+
     console.log(
-      `ip de Classe B pois os primeiros Bits são 10,o binário completo ${stringBinary}`
+      `ip de Classe B pois os primeiros Bits são 10,o binário completo ${stringBinary} e sua mask é ${maskClassB.join(
+        ""
+      )} o CIDR é, ${cidrClassB.join(
+        ""
+      )}, o endereço de rede é ${addressNetwork} o endereço de broadcast é ${addressBroadcast}`
     );
   }
   if (stringBinary.startsWith("110")) {
+    const { classC: maskClassC } = maskNetwork();
+    const { classC: cidrClassC } = cidr();
+    const addressNetwork = calcAddressNetwork(maskClassC);
+    const addressBroadcast = calcAddressBroadcast(addressNetwork);
+
     console.log(
-      `ip de Classe C pois os primeiros Bits são 110,o binário completo ${stringBinary}`
+      `ip de Classe C pois os primeiros Bits são 110,o binário completo ${stringBinary} e sua mask é ${maskClassC.join(
+        ""
+      )} o CIDR é, ${cidrClassC} o endereço de rede é ${addressNetwork} o endereço de broadcast é ${addressBroadcast}`
     );
   }
   if (stringBinary.startsWith("1110")) {
@@ -34,7 +59,6 @@ function classIpv4(arrayBinary) {
     );
   }
 }
-
 function transferToBinary(number, arr) {
   const binary = [];
   for (let i = 0; i <= arr.length; i++) {
@@ -60,6 +84,47 @@ function calculateNumber(ip) {
       return result;
     }
   }
+}
+function maskNetwork() {
+  return {
+    classA: ["255.", "0.", "0.", "0"],
+    classB: ["255.", "255.", "0.", "0"],
+    classC: ["255.", "255.", "255.", "0"],
+  };
+}
+
+function cidr() {
+  return {
+    classA: "8 bits",
+    classB: "16 bits",
+    classC: "24 bits",
+  };
+}
+
+function calcAddressNetwork(subMask) {
+  const resultAddressNetwork = [];
+  const ipArray = ip.split(".");
+  const newSubmask = subMask.map((item) => {
+    if (!item.endsWith(".")) {
+      item += ".";
+    }
+
+    if (item.endsWith(".")) {
+      return item.replace(".", "");
+    }
+  });
+  for (let i = 0; i <= newSubmask.length; i++) {
+    if (newSubmask[i] === "255") {
+      resultAddressNetwork.push(ipArray[i]);
+    }
+    if (newSubmask[i] === "0") {
+      resultAddressNetwork.push("0");
+    }
+  }
+  return resultAddressNetwork.join(".");
+}
+function calcAddressBroadcast(addressNetwork) {
+  return addressNetwork.replace("0", "255");
 }
 
 calculateIpv4();
